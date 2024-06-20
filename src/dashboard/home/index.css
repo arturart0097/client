@@ -1,0 +1,151 @@
+.contact-item__label {
+    color: var(--admss-app-main-blue);
+    font-weight: 600;
+    width: 110px;
+}
+
+.printing-menu__item {
+    margin-bottom: 15px;
+}
+
+.printing-menu__icon {
+    color: var(--admss-app-main-blue);
+    margin-right: 10px;
+}
+
+.table-message {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table-message thead {
+    background: var(--admss-app-light-blue);
+    text-align: left;
+}
+
+.table-message th,
+.table-message td {
+    padding: 8px 10px;
+}
+
+.table-message th {
+    color: var(--admss-app-main-blue);
+    font-weight: 700;
+}
+
+.table-message tr {
+    border-bottom: 1px solid var(--admss-app-light-grey);
+}
+
+.table-message tr:last-child {
+    border: none;
+}
+
+.common-tasks-menu__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    box-shadow: 0 0 5px 0 rgba(134, 173, 251, 0.8);
+    color: var(--admss-app-main-blue);
+    font-size: .88rem;
+    font-weight: 600;
+    padding: 25px 30px;
+    text-align: center;
+    text-decoration: none;
+    height: 100%;
+}
+
+.common-tasks-menu__item:hover {
+    background: var(--admss-app-main-blue);
+    color: #fff;
+}
+
+.common-tasks-menu__item:last-child {
+    margin-right: 0;
+}
+
+.common-tasks-menu__icon {
+    height: 55px;
+    margin-bottom: 24px;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.common-tasks-menu__icon.new-contact {
+    background-image: url("assets/images/icons/common-tasks/new-contact.svg");
+}
+
+.common-tasks-menu__icon.browse-all-contacts {
+    background-image: url("assets/images/icons/common-tasks/browse-all-contacts.svg");
+}
+
+.common-tasks-menu__icon.new-inventory {
+    background-image: url("assets/images/icons/common-tasks/new-inventory.svg");
+}
+
+.common-tasks-menu__icon.browser-all-inventory {
+    background-image: url("assets/images/icons/common-tasks/browse-all-inventory.svg");
+}
+
+.common-tasks-menu__icon.new-deal {
+    background-image: url("assets/images/icons/common-tasks/new-deal.svg");
+}
+
+.common-tasks-menu__icon.browse-all-deals {
+    background-image: url("assets/images/icons/common-tasks/browse-all-deals.svg");
+}
+
+.common-tasks-menu__icon.print-test-drive {
+    background-image: url("assets/images/icons/common-tasks/test-drive.svg");
+}
+
+.common-tasks-menu__item:hover .common-tasks-menu__icon.new-contact {
+    background-image: url("assets/images/icons/common-tasks/hover/new-contact.svg");
+}
+
+.common-tasks-menu__item:hover .common-tasks-menu__icon.browse-all-contacts {
+    background-image: url("assets/images/icons/common-tasks/hover/browse-all-contacts.svg");
+}
+
+.common-tasks-menu__item:hover .common-tasks-menu__icon.new-inventory {
+    background-image: url("assets/images/icons/common-tasks/hover/new-inventory.svg");
+}
+
+.common-tasks-menu__item:hover .common-tasks-menu__icon.browser-all-inventory {
+    background-image: url("assets/images/icons/common-tasks/hover/browse-all-inventory.svg");
+}
+
+.common-tasks-menu__item:hover .common-tasks-menu__icon.new-deal {
+    background-image: url("assets/images/icons/common-tasks/hover/new-deal.svg");
+}
+
+.common-tasks-menu__item:hover .common-tasks-menu__icon.browse-all-deals {
+    background-image: url("assets/images/icons/common-tasks/hover/browse-all-deals.svg");
+}
+
+.common-tasks-menu__item:hover .common-tasks-menu__icon.print-test-drive {
+    background-image: url("assets/images/icons/common-tasks/hover/test-drive.svg");
+}
+
+.add-task-control {
+    display: inline-flex;
+    align-items: center;
+    color: var(--admss-app-success);
+    cursor: pointer;
+}
+
+.add-task-control__icon {
+    margin-right: 14px;
+    font-weight: 600;
+}
+
+.messages-more {
+    text-align: right;
+    cursor: pointer;
+    text-decoration: underline;
+    font-weight: 600;
+    color: var(--admss-darkest-grey);
+}

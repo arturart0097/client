@@ -1,0 +1,88 @@
+/* App variables */
+
+:root {
+    --admss-app-font: "Open Sans", Arial, Helvetica, sans-serif;
+    --admss-app-font-weight: 400;
+    --admss-app-base-font-size: 18px;
+    --admss-app-main-blue: #295dc2;
+    --admss-app-light-grey: #cccccc;
+    --admss-app-lightest-grey: #e7e7e7;
+    --admss-app-medium-grey: #a4a6a8;
+    --admss-darkest-grey: #5f5f5f;
+    --admss-app-primary: #292b2e;
+    --admss-app-yellow: #f1ae00;
+    --admss-app-focus-yellow: #fff9c3;
+    --admss-app-red: #de0000;
+    --admss-app-focus-red: #ffc3c3;
+    --admss-app-success: #28a745;
+    --admss-app-green: #15c35b;
+    --admss-app-dark-green: #5ed69d;
+    --admss-app-focus-green: #c3ffe3;
+    --admss-app-light-green: #effff7;
+    --admss-app-primary-main-green: #0db564;
+    --admss-app-blue-text: #292a2e;
+    --admss-app-white: #ffffff;
+    --admss-app-white-blue: #f9fbff;
+    --admss-app-light-blue: #e5edfd;
+    --admss-app-medium-blue: #afc6f3;
+    --admss-app-dark-blue: #86adfb;
+    --admss-app-darkest-blue: #37455c;
+    --admss-app-deep-blue: #292c33;
+    --admss-app-aside-small-width: 130px;
+    --admss-app-dialog-border-radius: 15px;
+}
+
+::placeholder {
+    color: var(--admss-app-light-grey);
+}
+
+html,
+body,
+#root {
+    height: 100%;
+}
+
+html {
+    font-size: var(--admss-app-base-font-size);
+}
+
+body {
+    font-family: var(--admss-app-font);
+    font-weight: var(--admss-app-font-weight);
+    background-color: var(--admss-app-white-blue);
+}
+
+.container {
+    width: 100%;
+    margin: auto;
+}
+
+.m-r-20px {
+    margin-right: 20px !important;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--admss-app-medium-blue);
+}
+
+@media screen and (min-width: 992px) {
+    .container {
+        width: 824px;
+    }
+}
+
+@media screen and (min-width: 1400px) {
+    .container {
+        width: 1250px;
+    }
+}
+
+@media screen and (min-width: 1600px) {
+    .container {
+        width: 1538px;
+    }
+}
