@@ -470,7 +470,7 @@ export const InventoryForm = observer(() => {
                                         className='uppercase px-6 inventory__button'
                                         onClick={handleSaveInventoryForm}
                                         severity={isFormChanged ? "success" : "secondary"}
-                                        disabled={!isFormChanged}
+                                        disabled={!isFormChanged || inventoryExtData["fpReduxAmt"] < 0}
                                     >
                                         Save
                                     </Button>

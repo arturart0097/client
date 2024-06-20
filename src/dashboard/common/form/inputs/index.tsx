@@ -79,18 +79,25 @@ export const CurrencyInput = ({
     ...props
 }: CurrencyInputProps): ReactElement => {
     return (
-        <div
-            key={name}
-            className={"flex align-items-center justify-content-between currency-item relative"}
-        >
-            <label className={`currency-item__label ${labelPosition === "top" && "label-top"}`}>
-                {title}
-            </label>
-            <div className='currency-item__input flex justify-content-center'>
-                <div className='currency-item__icon input-icon input-icon-left'>$</div>
-                <InputNumber minFractionDigits={2} locale='en-US' value={value} {...props} />
+        <>
+            <div
+                key={name}
+                className={"flex align-items-center justify-content-between currency-item relative"}
+            >
+                <label className={`currency-item__label ${labelPosition === "top" && "label-top"}`}>
+                    {title}
+                </label>
+                <div className='currency-item__input flex justify-content-center'>
+                    <div className='currency-item__icon input-icon input-icon-left'>$</div>
+                    <InputNumber minFractionDigits={2} locale='en-US' value={value} {...props} min={0} />
+                </div>
             </div>
-        </div>
+            <div>
+                {value !== null && value !== undefined && value < 0 && (
+                    <p className='invalid-feedback'>Value cannot be negative</p>
+                )}
+            </div>
+        </>
     );
 };
 
@@ -112,7 +119,7 @@ export const PercentInput = ({
                 {title}
             </label>
             <div className='percent-item__input flex justify-content-center'>
-                <InputNumber inputId={name} minFractionDigits={2} name={name} {...props} />
+                <InputNumber inputId={name} minFractionDigits={2} name={name} {...props} min={0} />
                 <div className='percent-item__icon input-icon input-icon-right'>%</div>
             </div>
         </div>
