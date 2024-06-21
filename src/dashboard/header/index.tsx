@@ -25,30 +25,33 @@ export const Header = observer((): ReactElement => {
     const [supportContact, setSupportContact] = useState<boolean>(false);
     const [supportHistory, setSupportHistory] = useState<boolean>(false);
     const [userProfile, setUserProfile] = useState<boolean>(false);
+    const [isSalesPerson, setIsSalesPerson] = useState<boolean>(true);
 
-    const [isSalesPerson, setIsSalesPerson] = useState(true);
     useEffect(() => {
         if (authUser && Object.keys(authUser.permissions).length) {
             const { permissions } = authUser;
             const { uaSalesPerson, ...otherPermissions } = permissions;
             if (Object.values(otherPermissions).some((permission) => permission === 1)) {
-                return setIsSalesPerson(false);
+                setIsSalesPerson(false);
             }
-            if (!!uaSalesPerson) setIsSalesPerson(true);
+            if (!!uaSalesPerson) {
+                setIsSalesPerson(true);
+            }
         }
-    }, [authUser, authUser?.permissions]);
+    }, [authUser]);
 
     useEffect(() => {
         if (authUser) {
             getExtendedData(authUser.useruid).then((response) => {
                 if (response) {
                     setDealerName(response.dealerName);
-                    setLocation(response.location);
+                    if (response.location) {
+                        setLocation(response.location);
+                    }
                 }
             });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [authUser]);
 
     const signOut = ({ useruid }: AuthUser) => {
         logout(useruid).finally(() => {
@@ -143,5 +146,6 @@ export const Header = observer((): ReactElement => {
             </header>
         );
     }
+
     return <></>;
 });

@@ -89,7 +89,14 @@ export const CurrencyInput = ({
                 </label>
                 <div className='currency-item__input flex justify-content-center'>
                     <div className='currency-item__icon input-icon input-icon-left'>$</div>
-                    <InputNumber minFractionDigits={2} locale='en-US' value={value} {...props} min={0} />
+                    <InputNumber
+                        minFractionDigits={2}
+                        locale='en-US'
+                        value={value}
+                        {...props}
+                        min={0}
+                        placeholder='0.00'
+                    />
                 </div>
             </div>
             <div>

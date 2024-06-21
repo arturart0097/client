@@ -17,6 +17,7 @@ export const UserProfileDialog = ({
 }: UserProfileDialogProps): JSX.Element => {
     const [user, setUser] = useState<AuthUser>(authUser);
     const [newPassword, setNewPassword] = useState<boolean>(false);
+    const [userLocation, setUserLocation] = useState<string>("");
 
     const handleSendSupportContact = (): void => {
         return;
@@ -55,7 +56,11 @@ export const UserProfileDialog = ({
             <div className='user-profile__row profile-row'>
                 <div className='profile-row__label'>Location</div>
                 <div className='profile-row__value'>
-                    <InputText placeholder='Location' value={"Arizona"} onChange={(event) => {}} />
+                    <InputText
+                        placeholder='Location'
+                        value={userLocation}
+                        onChange={(event) => setUserLocation(event.target.value)}
+                    />
                 </div>
             </div>
             <div className='user-profile__row profile-row'>
