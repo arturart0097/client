@@ -47,3 +47,24 @@
     display: inline-flex;
     align-items: center;
 }
+
+.collection_items {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.collection_items > div {
+    width: 170px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.collection_items button {
+    width: 40px;
+    height: 40px;
+    opacity: 70%;
+}

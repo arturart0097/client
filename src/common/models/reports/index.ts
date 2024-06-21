@@ -22,6 +22,7 @@ export interface ReportCollection {
 }
 
 export interface ReportCollectionContent {
+    [x: string]: {};
     accessed: string;
     created: string;
     description: string;
@@ -31,6 +32,7 @@ export interface ReportCollectionContent {
     name: string;
     updated: string;
     userUID: string;
+    documents: IDocument[];
 }
 
 export interface ReportCollectionResponse extends BaseResponseError {
@@ -38,6 +40,7 @@ export interface ReportCollectionResponse extends BaseResponseError {
 }
 
 export interface ReportDocument {
+    [x: string]: any;
     description: string;
     index: number;
     itemuid: string;
@@ -45,6 +48,18 @@ export interface ReportDocument {
     state: string;
     type: string;
     version: string;
+}
+
+export interface IDocument {
+    accessed: string;
+    count: number;
+    created: string;
+    documentUID: string;
+    index: number;
+    isfavorite: number;
+    itemUID: string;
+    name: string;
+    updated: string;
 }
 
 export interface ReportsListResponse extends BaseResponseError {

@@ -1,4 +1,5 @@
-import { ReactElement, useEffect, useState } from "react";
+/* eslint-disable no-console */
+import { ReactElement, useEffect, useRef, useState } from "react";
 import { AuthUser } from "http/services/auth.service";
 import {
     createReportCollection,
@@ -17,20 +18,32 @@ import { TOAST_LIFETIME } from "common/settings";
 import { Panel, PanelHeaderTemplateOptions } from "primereact/panel";
 import { MultiSelect } from "primereact/multiselect";
 import { ReportCollectionContent, ReportDocument } from "common/models/reports";
+import ModalEditAccess from "./ModalEditAccess"; // Adjusted import
 
 interface Report {
     id: string;
     name: string;
 }
 
+interface CollectionOption {
+    id: string;
+    name: string;
+    type: "report" | "collection";
+}
+
+interface ModalMethods {
+    open: () => void;
+    close: () => void;
+}
+
 export default function Reports(): ReactElement {
     const [user, setUser] = useState<AuthUser | null>(null);
     const [reportSearch, setReportSearch] = useState<string>("");
-    // eslint-disable-next-line
     const [reports, setReports] = useState<ReportDocument[]>([]);
     const [collections, setCollections] = useState<ReportCollectionContent[]>([]);
     const [collectionName, setCollectionName] = useState<string>("");
-    const [selectedReports, setSelectedReports] = useState<Report[]>([]);
+    const [selectedOptions, setSelectedOptions] = useState<CollectionOption[]>([]);
+    const modalRef = useRef<ModalMethods>(null); // Updated useRef to ModalMethods
 
     const toast = useToast();
 
@@ -39,45 +52,118 @@ export default function Reports(): ReactElement {
         setUser(authUser);
     }, []);
 
-    const handleGetReportList = (useruid: string) =>
-        getReportsList(useruid).then((response) => {
-            const { error } = response as BaseResponseError;
-            if (error && toast.current) {
-                return toast.current.show({
-                    severity: "error",
-                    summary: "Error",
-                    detail: error,
-                    life: TOAST_LIFETIME,
-                });
-            }
-            const document = response as ReportDocument[];
-            setReports(document);
-        });
-
-    const handleGetUserReportCollections = (useruid: string) =>
-        getUserReportCollectionsContent(useruid).then((response) => {
-            const { error } = response as BaseResponseError;
-            if (error && toast.current) {
-                return toast.current.show({
-                    severity: "error",
-                    summary: "Error",
-                    detail: error,
-                    life: TOAST_LIFETIME,
-                });
-            }
-            const collections = response as ReportCollectionContent[];
-            setCollections(collections);
-        });
-
     useEffect(() => {
         if (user) {
             handleGetReportList(user.useruid);
             handleGetUserReportCollections(user.useruid);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [toast, user]);
+    }, [user]); // Removed toast dependency from useEffect
 
-    // eslint-disable-next-line
+    const handleGetReportList = (useruid: string) =>
+        getReportsList(useruid)
+            .then((response) => {
+                console.log("getReportsList response:", response); // Log response
+                if (!response) {
+                    throw new Error("Response is undefined");
+                }
+                const { error } = response as BaseResponseError;
+                if (error && toast.current) {
+                    return toast.current.show({
+                        severity: "error",
+                        summary: "Error",
+                        detail: error,
+                        life: TOAST_LIFETIME,
+                    });
+                }
+                const documents = response as ReportDocument[];
+                setReports(documents);
+            })
+            .catch((error) => {
+                console.error("Error fetching report list:", error);
+                if (toast.current) {
+                    toast.current.show({
+                        severity: "error",
+                        summary: "Error",
+                        detail: error.message,
+                        life: TOAST_LIFETIME,
+                    });
+                }
+            });
+
+    const handleGetUserReportCollections = (useruid: string) =>
+        getUserReportCollectionsContent(useruid)
+            .then((response) => {
+                console.log("getUserReportCollectionsContent response:", response); // Log response
+                if (!response) {
+                    throw new Error("Response is undefined");
+                }
+                const { error } = response as BaseResponseError;
+                if (error && toast.current) {
+                    return toast.current.show({
+                        severity: "error",
+                        summary: "Error",
+                        detail: error,
+                        life: TOAST_LIFETIME,
+                    });
+                }
+                const collections = response as ReportCollectionContent[];
+                setCollections(collections);
+            })
+            .catch((error) => {
+                console.error("Error fetching report collections:", error);
+                if (toast.current) {
+                    toast.current.show({
+                        severity: "error",
+                        summary: "Error",
+                        detail: error.message,
+                        life: TOAST_LIFETIME,
+                    });
+                }
+            });
+
+    const handleCreateCollection = () => {
+        if (collectionName) {
+            createReportCollection(user!.useruid, collectionName)
+                .then((response) => {
+                    console.log("createReportCollection response:", response); // Log response
+                    if (!response) {
+                        throw new Error("Response is undefined");
+                    }
+                    const { error, data } = response as {
+                        error?: string;
+                        data?: ReportCollectionContent;
+                    };
+                    if (error && toast.current) {
+                        toast.current.show({
+                            severity: "error",
+                            summary: "Error",
+                            detail: error,
+                            life: TOAST_LIFETIME,
+                        });
+                    } else if (data) {
+                        setCollections((prevCollections) => [...prevCollections, data]); // Add new collection to state
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error creating collection:", error);
+                    if (toast.current) {
+                        toast.current.show({
+                            severity: "error",
+                            summary: "Error",
+                            detail: error.message,
+                            life: TOAST_LIFETIME,
+                        });
+                    }
+                });
+        }
+    };
+
+    const editModalHandler = () => {
+        if (modalRef.current) {
+            modalRef?.current?.open();
+        }
+    };
+
     const ActionButtons = ({ reportuid }: { reportuid: string }): ReactElement => {
         return (
             <div className='reports-actions flex gap-3'>
@@ -134,122 +220,149 @@ export default function Reports(): ReactElement {
         );
     };
 
-    // eslint-disable-next-line
-    const handleReportGroupSelect = (items: Report[]) => {
-        const allItemsSelected = items.every((item) =>
-            selectedReports.some((selected) => selected.id === item.id)
-        );
-
-        if (allItemsSelected) {
-            setSelectedReports(
-                selectedReports.filter((report) => !items.some((item) => item.id === report.id))
-            );
-        } else {
-            const newSelectedReports = items.filter(
-                (item) => !selectedReports.some((selected) => selected.id === item.id)
-            );
-            setSelectedReports([...selectedReports, ...newSelectedReports]);
-        }
-    };
-
-    const handleCreateCollection = () => {
-        if (collectionName) {
-            createReportCollection(user!.useruid, collectionName).then((response) => {
-                const { error } = response as BaseResponseError;
-                if (error && toast.current) {
-                    toast.current.show({
-                        severity: "error",
-                        summary: "Error",
-                        detail: error,
-                        life: TOAST_LIFETIME,
-                    });
-                } else {
-                    user && handleGetUserReportCollections(user.useruid);
-                }
-            });
-        }
-    };
+    const combinedOptions: (CollectionOption | { label: string; value: string })[] = [
+        { label: "Reports", value: "reportsHeader" },
+        ...reports.map((report) => ({ id: report.id, name: report.name, type: "report" as const })),
+        { label: "Collections", value: "collectionsHeader" },
+        ...collections.map((collection) => ({
+            id: collection.itemUID,
+            name: collection.name,
+            type: "collection" as const,
+        })),
+    ];
 
     return (
-        <div className='grid'>
-            <div className='col-12'>
-                <div className='card reports'>
-                    <div className='card-header'>
-                        <h2 className='card-header__title uppercase m-0'>Reports</h2>
-                    </div>
-                    <div className='card-content'>
-                        <div className='grid'>
-                            <div className='col-12'>
-                                <Panel
-                                    headerTemplate={ReportsPanelHeader}
-                                    className='new-collection w-full'
-                                    collapsed
-                                    toggleable
-                                >
-                                    <h3 className='uppercase new-collection__title'>
-                                        Add new collection
-                                    </h3>
-                                    <div className='grid new-collection__form'>
-                                        <div className='col-4'>
-                                            <InputText
-                                                className='w-full'
-                                                value={collectionName}
-                                                onChange={(e) => setCollectionName(e.target.value)}
-                                                placeholder='Collection name'
-                                            />
-                                        </div>
-                                        <div className='col-8'>
-                                            <MultiSelect
-                                                filter
-                                                optionLabel='name'
-                                                options={reports}
-                                                className='w-full new-collection__multiselect'
-                                                placeholder='Select reports'
-                                                showSelectAll={false}
-                                                value={selectedReports}
-                                                display='chip'
-                                                onChange={(e) => {
-                                                    e.stopPropagation();
-                                                    setSelectedReports(e.value);
-                                                }}
-                                                pt={{
-                                                    wrapper: {
-                                                        style: {
-                                                            minHeight: "420px",
+        <>
+            <div className='grid'>
+                <div className='col-12'>
+                    <div className='card reports'>
+                        <div className='card-header'>
+                            <h2 className='card-header__title uppercase m-0'>Reports</h2>
+                        </div>
+                        <div className='card-content'>
+                            <div className='grid'>
+                                <div className='col-12'>
+                                    <Panel
+                                        headerTemplate={ReportsPanelHeader}
+                                        className='new-collection w-full'
+                                        collapsed
+                                        toggleable
+                                    >
+                                        <h3 className='uppercase new-collection__title'>
+                                            Add new collection
+                                        </h3>
+                                        <div className='grid new-collection__form'>
+                                            <div className='col-4'>
+                                                <InputText
+                                                    className='w-full'
+                                                    value={collectionName}
+                                                    onChange={(e) =>
+                                                        setCollectionName(e.target.value)
+                                                    }
+                                                    placeholder='Collection name'
+                                                />
+                                            </div>
+                                            <div className='col-8'>
+                                                <MultiSelect
+                                                    filter
+                                                    optionLabel='name'
+                                                    options={combinedOptions}
+                                                    className='w-full new-collection__multiselect'
+                                                    placeholder='Select reports or collections'
+                                                    showSelectAll={false}
+                                                    value={selectedOptions}
+                                                    display='chip'
+                                                    onChange={(e) => {
+                                                        e.stopPropagation();
+                                                        setSelectedOptions(e.value);
+                                                    }}
+                                                    pt={{
+                                                        wrapper: {
+                                                            style: {
+                                                                minHeight: "420px",
+                                                            },
                                                         },
-                                                    },
-                                                }}
-                                            />
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className='col-12 flex justify-content-end'>
+                                                <Button onClick={handleCreateCollection} outlined>
+                                                    Create collection
+                                                </Button>
+                                            </div>
                                         </div>
-                                        <div className='col-12 flex justify-content-end'>
-                                            <Button onClick={handleCreateCollection} outlined>
-                                                Create collection
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </Panel>
-                            </div>
-                            <div className='col-12'>
-                                <Accordion multiple className='reports__accordion'>
-                                    {collections &&
-                                        collections.map(({ itemUID, name }) => (
-                                            <AccordionTab
-                                                key={itemUID}
-                                                header={
-                                                    <ReportsAccordionHeader
-                                                        title={name}
-                                                        info={`(0 reports)`}
-                                                    />
-                                                }
-                                                className='reports__accordion-tab'
-                                            ></AccordionTab>
-                                        ))}
-                                </Accordion>
+                                    </Panel>
+                                </div>
+                                <div className='col-12'>
+                                    <Accordion multiple className='reports__accordion'>
+                                        {collections &&
+                                            collections.map((collection) => (
+                                                <AccordionTab
+                                                    key={collection.itemUID}
+                                                    header={
+                                                        <ReportsAccordionHeader
+                                                            title={collection.name}
+                                                            info={`(${
+                                                                collection?.documents?.length ?? 0
+                                                            } reports)`}
+                                                        />
+                                                    }
+                                                    className='reports__accordion-tab'
+                                                >
+                                                    {collection?.documents?.map((el) => (
+                                                        <div
+                                                            className='collection_items'
+                                                            key={el.itemUID}
+                                                            onClick={editModalHandler}
+                                                        >
+                                                            {el.name}
+                                                            <div>
+                                                                <button data-tooltip='Add to Collection'>
+                                                                    1
+                                                                </button>
+                                                                <button data-tooltip='Like this Collection'>
+                                                                    2
+                                                                </button>
+                                                                <button data-tooltip='Users with access'>
+                                                                    3
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </AccordionTab>
+                                            ))}
+                                    </Accordion>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <ModalEditAccess ref={modalRef} title='Edit access'>
+                <div>
+                    {/* <MultiSelect
+                        style={{ zIndex: "2" }}
+                        optionValue='value'
+                        optionLabel='label'
+                        placeholder='Filter'
+                        className='w-full pb-0 h-full flex align-items-center inventory-filter'
+                        display='chip'
+                        selectedItemsLabel='Clear Filter'
+                        pt={{
+                            header: {
+                                className: "inventory-filter__header",
+                            },
+                            wrapper: {
+                                className: "inventory-filter__wrapper",
+                                style: {
+                                    maxHeight: "500px",
+                                },
+                            },
+                        }}
+                    /> */}
+                </div>
+            </ModalEditAccess>
+        </>
     );
 }

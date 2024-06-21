@@ -1,0 +1,12 @@
+#modal {
+    width: 40%;
+    background: #fff;
+    border: none;
+    border-radius: 7px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    animation: fade-slide-in-from-top 0.3s ease-in-out;
+}
+
+#modal::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
