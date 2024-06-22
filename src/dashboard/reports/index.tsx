@@ -47,9 +47,6 @@ export default function Reports(): ReactElement {
 
     const toast = useToast();
 
-    
-    console.log(collections)
-
     useEffect(() => {
         const authUser: AuthUser = getKeyValue(LS_APP_USER);
         setUser(authUser);
