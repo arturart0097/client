@@ -97,6 +97,9 @@ export const ContactsIdentificationInfo = observer((): ReactElement => {
                 className={`col-6 ml-auto flex justify-content-center flex-wrap mb-3 dl-header ${
                     size ? "dl-header__active" : ""
                 }`}
+                style={{
+                    margin: "0 auto",
+                }}
             >
                 {chooseButton}
             </div>
@@ -105,7 +108,12 @@ export const ContactsIdentificationInfo = observer((): ReactElement => {
 
     const emptyTemplate = () => {
         return (
-            <div className='grid col-6 ml-auto'>
+            <div
+                className='grid col-6 ml-auto'
+                style={{
+                    margin: "0 auto",
+                }}
+            >
                 <div className='flex align-items-center flex-column col-12'>
                     <i className='pi pi-cloud-upload dl__upload-icon' />
                     <span className='text-center dl__upload-icon-label'>
@@ -198,7 +206,7 @@ export const ContactsIdentificationInfo = observer((): ReactElement => {
                     className='identification-info__date-input w-full'
                 />
             </div>
-            {id && (
+            {/* {id && ( */}
                 <>
                     <div className='flex col-12'>
                         <h3 className='identification__title m-0 pr-3'>Driver license's photos</h3>
@@ -248,7 +256,7 @@ export const ContactsIdentificationInfo = observer((): ReactElement => {
                         )}
                     </div>
                 </>
-            )}
+            {/* )} */}
         </div>
     );
 });

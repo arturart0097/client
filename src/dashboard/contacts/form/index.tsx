@@ -80,10 +80,10 @@ export const ContactForm = observer((): ReactElement => {
     const [validateOnMount, setValidateOnMount] = useState<boolean>(false);
     const [errorSections, setErrorSections] = useState<string[]>([]);
     useEffect(() => {
-        const contactSections: any[] = [GeneralInfoData, ContactInfoData];
+        const contactSections: any[] = [GeneralInfoData, ContactInfoData, ContactMediaData];
         if (id) {
             getContact(id);
-            contactSections.splice(2, 0, ContactMediaData);
+            // contactSections.splice(2, 0, ContactMediaData);
         } else {
             clearContact();
         }
