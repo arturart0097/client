@@ -109,6 +109,7 @@ export const ContactsGeneralInfo = observer((): ReactElement => {
                         value={contact.type || 0}
                         filter
                         options={typeList}
+                        placeholder="Type (required)"
                         onChange={(e) => {
                             setFieldValue("type", e.value);
                             changeContact("type", e.value);

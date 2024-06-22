@@ -207,55 +207,55 @@ export const ContactsIdentificationInfo = observer((): ReactElement => {
                 />
             </div>
             {/* {id && ( */}
-            <>
-                <div className='flex col-12'>
-                    <h3 className='identification__title m-0 pr-3'>Driver license's photos</h3>
-                    <hr className='identification__line flex-1' />
-                </div>
+                <>
+                    <div className='flex col-12'>
+                        <h3 className='identification__title m-0 pr-3'>Driver license's photos</h3>
+                        <hr className='identification__line flex-1' />
+                    </div>
 
-                <div
-                    className={`col-6 identification-dl ${
-                        frontSideDL.size ? "identification-dl__active" : ""
-                    }`}
-                >
-                    <div className='identification-dl__title'>Frontside</div>
-                    {isLoading && <Loader />}
-                    {frontSideDLurl && !isLoading ? (
-                        itemTemplate(frontSideDLurl, DLSides.FRONT)
-                    ) : (
-                        <FileUpload
-                            ref={fileUploadFrontRef}
-                            accept='image/*'
-                            headerTemplate={(props) => chooseTemplate(props, DLSides.FRONT)}
-                            itemTemplate={(file) => itemTemplate(file as File, DLSides.FRONT)}
-                            emptyTemplate={emptyTemplate}
-                            onSelect={(event) => onTemplateSelect(event, DLSides.FRONT)}
-                            progressBarTemplate={<></>}
-                        />
-                    )}
-                </div>
-                <div
-                    className={`col-6 identification-dl ${
-                        backSideDL.size ? "identification-dl__active" : ""
-                    }`}
-                >
-                    <div className='identification-dl__title'>Backside</div>
-                    {isLoading && <Loader />}
-                    {backSideDLurl && !isLoading ? (
-                        itemTemplate(backSideDLurl, DLSides.BACK)
-                    ) : (
-                        <FileUpload
-                            ref={fileUploadBackRef}
-                            accept='image/*'
-                            headerTemplate={(props) => chooseTemplate(props, DLSides.BACK)}
-                            itemTemplate={(file) => itemTemplate(file as File, DLSides.BACK)}
-                            emptyTemplate={emptyTemplate}
-                            onSelect={(event) => onTemplateSelect(event, DLSides.BACK)}
-                            progressBarTemplate={<></>}
-                        />
-                    )}
-                </div>
-            </>
+                    <div
+                        className={`col-6 identification-dl ${
+                            frontSideDL.size ? "identification-dl__active" : ""
+                        }`}
+                    >
+                        <div className='identification-dl__title'>Frontside</div>
+                        {isLoading && <Loader />}
+                        {frontSideDLurl && !isLoading ? (
+                            itemTemplate(frontSideDLurl, DLSides.FRONT)
+                        ) : (
+                            <FileUpload
+                                ref={fileUploadFrontRef}
+                                accept='image/*'
+                                headerTemplate={(props) => chooseTemplate(props, DLSides.FRONT)}
+                                itemTemplate={(file) => itemTemplate(file as File, DLSides.FRONT)}
+                                emptyTemplate={emptyTemplate}
+                                onSelect={(event) => onTemplateSelect(event, DLSides.FRONT)}
+                                progressBarTemplate={<></>}
+                            />
+                        )}
+                    </div>
+                    <div
+                        className={`col-6 identification-dl ${
+                            backSideDL.size ? "identification-dl__active" : ""
+                        }`}
+                    >
+                        <div className='identification-dl__title'>Backside</div>
+                        {isLoading && <Loader />}
+                        {backSideDLurl && !isLoading ? (
+                            itemTemplate(backSideDLurl, DLSides.BACK)
+                        ) : (
+                            <FileUpload
+                                ref={fileUploadBackRef}
+                                accept='image/*'
+                                headerTemplate={(props) => chooseTemplate(props, DLSides.BACK)}
+                                itemTemplate={(file) => itemTemplate(file as File, DLSides.BACK)}
+                                emptyTemplate={emptyTemplate}
+                                onSelect={(event) => onTemplateSelect(event, DLSides.BACK)}
+                                progressBarTemplate={<></>}
+                            />
+                        )}
+                    </div>
+                </>
             {/* )} */}
         </div>
     );
