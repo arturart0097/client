@@ -71,7 +71,7 @@ export default function SignIn() {
                 <div className='sign-in-wrapper'>
                     <h1 className='sign__title'>Sign In</h1>
                     <form onSubmit={formik.handleSubmit}>
-                        <div className='sign-in__input space pt-2 pb-2'>
+                        <div className='sign-in__input space pt-2'>
                             <span className='w-full p-float-label p-input-icon-right'>
                                 <i className='adms-username-my-profile sign__icon' />
                                 <InputText
@@ -85,18 +85,25 @@ export default function SignIn() {
                                 />
                                 <label htmlFor='username'>Username</label>
                             </span>
-                            {formik.errors.username ? (
-                                <small className='p-error error-space'>
+                            {formik.errors.username && (
+                                <small
+                                    className='error-space'
+                                    style={{
+                                        color: "red",
+                                    }}
+                                >
                                     {formik.errors.username}
                                 </small>
-                            ) : null}
+                            )}
                         </div>
 
-                        <div className='sign-in__input space pt-2 pb-2'>
+                        <div className='sign-in__input space pt-2'>
                             <span className='w-full p-float-label sign-in__password'>
                                 <InputText
                                     placeholder='Password'
-                                    className='sign__input'
+                                    className={`sign__input ${
+                                        formik.errors.password ? "p-invalid" : ""
+                                    }`}
                                     id='password'
                                     type={!passwordVisible ? "password" : "text"}
                                     onChange={formik.handleChange}
@@ -113,9 +120,15 @@ export default function SignIn() {
                                 />
                                 <label htmlFor='password'>Password</label>
                             </span>
-                            {formik.errors.password ? (
-                                <small className='p-error'>{formik.errors.password}</small>
-                            ) : null}
+                            {formik.errors.password && (
+                                <small
+                                    style={{
+                                        color: "red",
+                                    }}
+                                >
+                                    {formik.errors.password}
+                                </small>
+                            )}
                         </div>
 
                         <div className='flex justify-content-between user-help'>
