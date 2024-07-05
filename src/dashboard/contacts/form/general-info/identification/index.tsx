@@ -242,7 +242,7 @@ export const ContactsIdentificationInfo = observer((): ReactElement => {
                     <div className='identification-dl__title'>Backside</div>
                     {isLoading && <Loader />}
                     {backSideDLurl && !isLoading ? (
-                        itemTemplate(backSideDLurl, DLSides.BACK)
+                        itemTemplate(backSideDLurl, DLSides.BACK) 
                     ) : (
                         <FileUpload
                             ref={fileUploadBackRef}
