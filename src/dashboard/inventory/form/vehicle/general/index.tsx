@@ -37,8 +37,15 @@ const parseMileage = (mileage: string): number => {
 
 export const VehicleGeneral = observer((): ReactElement => {
     const store = useStore().inventoryStore;
-    const { inventory, changeInventory, inventoryAudit, changeInventoryAudit } = store;
-    const { values, errors, setFieldValue, getFieldProps, validateField, handleBlur } =
+    const {
+        inventory,
+        activeInventory,
+        changeInventory,
+        inventoryAudit,
+        changeInventoryAudit,
+        setActiveInventory,
+    } = store;
+    const { values, setValues, errors, setFieldValue, getFieldProps, validateField, handleBlur } =
         useFormikContext<Inventory>();
 
     const [user, setUser] = useState<AuthUser | null>(null);
@@ -49,6 +56,19 @@ export const VehicleGeneral = observer((): ReactElement => {
     const [groupClassList, setGroupClassList] = useState<UserGroup[]>([]);
     const [locationList, setLocationList] = useState<InventoryLocations[]>([]);
     const [allowOverwrite, setAllowOverwrite] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (activeInventory) {
+            setValues(activeInventory);
+        }
+    }, [activeInventory, setValues]);
+
+    useEffect(() => {
+        setActiveInventory(values);
+    }, [setActiveInventory, values]);
+
+    // eslint-disable-next-line no-console
+    console.log(activeInventory);
 
     useEffect(() => {
         const authUser: AuthUser = getKeyValue(LS_APP_USER);

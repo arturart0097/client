@@ -63,6 +63,10 @@ const initialAuditState: Partial<Audit> = {
 };
 
 export class InventoryStore {
+    // static activeInventory: any;
+    // static setActiveInventory(values: Inventory) {
+    //     throw new Error("Method not implemented.");
+    // }
     public rootStore: RootStore;
     private _inventory: Inventory = {} as Inventory;
     private _inventoryID: string = "";
@@ -86,6 +90,8 @@ export class InventoryStore {
     private _inventoryAudioID: Partial<InventoryMediaItemID>[] = [];
     private _uploadFileAudios: UploadMediaItem = initialMediaItem;
     private _audios: MediaItem[] = [];
+
+    activeInventory: any = null;
 
     private _inventoryDocumentsID: Partial<InventoryMediaItemID>[] = [];
     private _uploadFileDocuments: UploadMediaItem = initialMediaItem;
@@ -647,6 +653,14 @@ export class InventoryStore {
     public set deleteReason(state: string) {
         this._deleteReason = state;
     }
+
+    public setActiveInventory = (inventory: Inventory) => {
+        this.activeInventory = inventory;
+    };
+
+    public clearActiveInventory = () => {
+        this.activeInventory = null;
+    };
 
     public clearMedia = () => {
         this._inventoryImagesID = [];
